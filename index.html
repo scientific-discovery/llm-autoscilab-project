@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs">
+  <meta name="description" content="LLM-AutoSciLab couples LLM hypothesis generation with hypothesis-conditioned experiment selection, and introduces ActiveSciBench for budget-limited active scientific discovery.">
+  <meta name="keywords" content="Scientific Discovery, Active Experimentation, Experimental Design, Large Language Models, Equation Discovery, Gene Regulatory Networks, AI4Science">
+  <meta name="author" content="Sanchit Kabra*, Nikhil Abhyankar*, Saaketh Desai, Prasad P. Iyer, Chandan K. Reddy">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Reddy AI Lab - Scientific Discovery">
+  <meta property="og:title" content="LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs">
+  <meta property="og:description" content="Hypothesis-conditioned experiment selection with LLMs, plus the ActiveSciBench benchmark for active discovery. NeurIPS 2026.">
+  <meta property="og:url" content="https://scientific-discovery.github.io/llm-autoscilab-project">
+  <meta property="og:image" content="https://scientific-discovery.github.io/llm-autoscilab-project/static/images/main_fig.png">
+  <meta property="og:image:alt" content="Overview of the LLM-AutoSciLab framework">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs">
+  <meta name="twitter:description" content="Hypothesis-conditioned experiment selection with LLMs, plus the ActiveSciBench benchmark for active discovery. NeurIPS 2026.">
+  <meta name="twitter:image" content="https://scientific-discovery.github.io/llm-autoscilab-project/static/images/main_fig.png">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs">
+  <meta name="citation_author" content="Kabra, Sanchit">
+  <meta name="citation_author" content="Abhyankar, Nikhil">
+  <meta name="citation_author" content="Desai, Saaketh">
+  <meta name="citation_author" content="Iyer, Prasad P.">
+  <meta name="citation_author" content="Reddy, Chandan K.">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="Conference on Neural Information Processing Systems (NeurIPS)">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2605.24043">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs | NeurIPS 2026</title>
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/results.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  <script defer src="static/js/d3.v7.min.js"></script>
+  <script defer src="static/js/viz.js"></script>
+  <script defer src="static/js/autoscilab-results.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs",
+    "description": "A closed-loop framework that couples hypothesis generation with hypothesis-conditioned experiment selection and mechanism refinement, evaluated on NewtonBench and the new ActiveSciBench benchmark.",
+    "author": [
+      { "@type": "Person", "name": "Sanchit Kabra", "affiliation": { "@type": "Organization", "name": "Virginia Tech" } },
+      { "@type": "Person", "name": "Nikhil Abhyankar", "affiliation": { "@type": "Organization", "name": "Virginia Tech" } },
+      { "@type": "Person", "name": "Saaketh Desai", "affiliation": { "@type": "Organization", "name": "Sandia National Laboratories" } },
+      { "@type": "Person", "name": "Prasad P. Iyer", "affiliation": { "@type": "Organization", "name": "Sandia National Laboratories" } },
+      { "@type": "Person", "name": "Chandan K. Reddy", "affiliation": { "@type": "Organization", "name": "Virginia Tech" } }
+    ],
+    "datePublished": "2026",
+    "publisher": { "@type": "Organization", "name": "Conference on Neural Information Processing Systems (NeurIPS)" },
+    "url": "https://scientific-discovery.github.io/llm-autoscilab-project",
+    "keywords": ["Scientific Discovery", "Active Experimentation", "Experimental Design", "Large Language Models", "Benchmark"],
+    "abstract": "Scientific discovery is a closed-loop process where hypotheses guide data acquisition and observations refine the hypothesis space. Yet most approaches reduce discovery to supervised learning over fixed datasets, where limited observations can support multiple plausible mechanisms that fit locally but fail to generalize. Thus, the key challenge is selecting informative observations to resolve uncertainty, shifting the focus from static inference to adaptive data acquisition. To address this, we propose LLM-AutoSciLab, a closed-loop framework that couples hypothesis generation with hypothesis-conditioned experiment selection and mechanism refinement. Rather than fitting models to passively collected data, LLM-AutoSciLab iteratively proposes plausible hypotheses, selects informative experiments to distinguish or refine them, and updates its state using the resulting evidence. To evaluate dynamic, closed-loop scientific discovery with active data acquisition, we introduce ActiveSciBench, comprising two datasets: (i) ActiveSciBench-Chem (57 enzyme-kinetics tasks) and (ii) ActiveSciBench-GRN (45 gene-regulatory-network tasks), that model discovery as a budget-constrained process requiring adaptive experiment design, variable selection, and recovery of true mechanisms. Across NewtonBench, ActiveSciBench-Chem, and ActiveSciBench-GRN, LLM-AutoSciLab outperforms prior methods, achieving 67.6% and 35.1% symbolic accuracy on NewtonBench and ActiveSciBench-Chem, respectively, and 31.1% exact graph recovery on ActiveSciBench-GRN. Moreover, hypothesis-guided experimentation is 2-5x more sample-efficient than the strongest competing baselines.",
+    "citation": "@inproceedings{kabra2026llmautoscilab, title={LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs}, author={Kabra, Sanchit and Abhyankar, Nikhil and Desai, Saaketh and Iyer, Prasad P. and Reddy, Chandan K.}, booktitle={The Fortieth Annual Conference on Neural Information Processing Systems (NeurIPS)}, year={2026}}",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": { "@type": "WebPage", "@id": "https://scientific-discovery.github.io/llm-autoscilab-project" },
+    "about": [
+      { "@type": "Thing", "name": "Scientific Discovery" },
+      { "@type": "Thing", "name": "Large Language Models" },
+      { "@type": "Thing", "name": "Experimental Design" }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+  <section class="hero">
+    <!-- Logos -->
+    <div class="header-logos">
+      <div class="header-logo-left">
+        <img src="static/images/vt.png" alt="Virginia Tech" style="height: 35px; width: auto;"/>
+        <img src="static/images/snl_horizontal_black_blue.png" alt="Sandia National Laboratories" style="height: 35px; width: auto; margin-left: 1rem;"/>
+      </div>
+      <!-- More Works Dropdown -->
+      <div class="more-works-container">
+        <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
+          <i class="fas fa-flask"></i>
+          More Works
+          <i class="fas fa-chevron-down dropdown-arrow"></i>
+        </button>
+        <div class="more-works-dropdown" id="moreWorksDropdown">
+          <div class="dropdown-header">
+            <h4>More Works from Our Lab</h4>
+            <button class="close-btn" onclick="toggleMoreWorks()" aria-label="Close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="works-list">
+            <a href="https://scientific-discovery.github.io/main_page/" class="work-item" target="_blank">
+              <div class="work-info">
+                <h5>All Projects: Safe LLM Agents for Open-Ended Scientific Discovery</h5>
+                <p>One page for LLM-ACES, LLM-AutoSciLab, LLEMA and LLM-FE, and the research theme that connects them.</p>
+                <span class="work-venue">Overview of all projects</span>
+              </div>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://scientific-discovery.github.io/llm-aces-project/" class="work-item" target="_blank">
+              <div class="work-info">
+                <h5>LLM-ACES: Closed-Loop Discovery of Dynamical Systems with LLM-Guided Adaptive Search</h5>
+                <p>LLM-induced operator priors plus predictive-divergence trajectory acquisition for recovering governing ODEs.</p>
+                <span class="work-venue">NeurIPS 2026</span>
+              </div>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://scientific-discovery.github.io/llema-project/" class="work-item" target="_blank">
+              <div class="work-info">
+                <h5>LLEMA: Evolutionary Search with LLMs for Multi-Objective Materials Discovery</h5>
+                <p>Couples the scientific knowledge in LLMs with chemistry-informed evolutionary rules and memory-based refinement for materials discovery.</p>
+                <span class="work-venue">ICLR 2026</span>
+              </div>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://scientific-discovery.github.io/llm-fe/" class="work-item" target="_blank">
+              <div class="work-info">
+                <h5>LLM-FE: Automated Feature Engineering with Large Language Models</h5>
+                <p>A framework that casts feature engineering as evolutionary program search, with LLMs generating and refining executable feature transformations.</p>
+                <span class="work-venue">TMLR 2026</span>
+              </div>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="has-text-centered">
+          <h1 class="title is-1 publication-title">LLM-AutoSciLab: Closed-Loop Scientific Discovery via Active Experimentation with LLMs</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/sanchit-kabra-285456166/" target="_blank">Sanchit Kabra</a><small><sup class="smaller-superscript" style="font-size:0.6em">1*</sup></small>,</span>
+            <span class="author-block">
+              <a href="https://nikhilsab.github.io/" target="_blank">Nikhil Abhyankar</a><small><sup class="smaller-superscript" style="font-size:0.6em">1*</sup></small>,</span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/saaketh-desai/" target="_blank">Saaketh Desai</a><small><sup class="smaller-superscript" style="font-size:0.6em">2</sup></small>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=lhDYN_YAAAAJ" target="_blank">Prasad P. Iyer</a><small><sup class="smaller-superscript" style="font-size:0.6em">2</sup></small>,</span>
+            <span class="author-block">
+              <a href="https://creddy.net/" target="_blank">Chandan K. Reddy</a><small><sup class="smaller-superscript" style="font-size:0.6em">1</sup></small>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+             <span class="author-block"><sup class="smaller-superscript" style="font-size:0.6em">1</sup>Virginia Tech</span>
+             <span class="author-block"><sup class="smaller-superscript" style="font-size:0.6em">2</sup>Sandia National Laboratories</span>
+             <br>
+             <div class="venue-badge">
+               <img src="static/images/neurips.png" alt="NeurIPS logo"/>
+               <strong>NeurIPS 2026</strong>
+             </div>
+             <span class="eql-cntrb"><small><br><sup>*</sup>Equal Contribution</small></span>
+          </div>
+
+          <div class="publication-links">
+            <span class="link-block">
+              <a href="https://arxiv.org/pdf/2605.24043" target="_blank"
+              class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                <span>Paper</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2605.24043" target="_blank"
+              class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://github.com/scientific-discovery/LLM-AutoSciLab" target="_blank"
+              class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Results at a glance -->
+<section class="section" style="padding-top: 0.5rem;">
+  <div class="container">
+    <div class="stat-strip" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 1040px;">
+      <div class="stat-tile">
+        <div class="stat-label">Symbolic accuracy on NewtonBench</div>
+        <div class="stat-value"><span class="stat-accent">67.6%</span></div>
+        <div class="stat-context">12 physics domains with counterfactual laws; the best baseline (Bayesian optimization) reaches 24.5%.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Symbolic accuracy on ActiveSciBench-Chem</div>
+        <div class="stat-value"><span class="stat-accent">35.1%</span></div>
+        <div class="stat-context">57 enzyme-kinetics tasks; Bayesian experimental design reaches 31.6%, both LLM baselines 0%.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Exact graph recovery on ActiveSciBench-GRN</div>
+        <div class="stat-value"><span class="stat-accent">31.1%</span></div>
+        <div class="stat-context">45 regulatory-network tasks; the best baseline (GIES) recovers 6.7% of graphs exactly.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">More sample-efficient</div>
+        <div class="stat-value">2&ndash;5&times;</div>
+        <div class="stat-context">than the strongest competing baselines: they need several times more oracle queries to match LLM-AutoSciLab.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Edge F1 on ActiveSciBench-GRN</div>
+        <div class="stat-value">72.5%</div>
+        <div class="stat-context">vs 56.3% for GIES, with 98.2% of edge signs (activation vs repression) correct.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Hidden kinetic instantiations</div>
+        <div class="stat-value">&gt;6&times;10<sup style="font-size:0.5em">16</sup></div>
+        <div class="stat-context">in ActiveSciBench-Chem even at 100 values per hidden parameter, so tasks cannot be solved by recalling textbook laws.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End results at a glance -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>Scientific discovery is a closed-loop process where hypotheses guide data acquisition and observations refine the hypothesis space. Yet most approaches reduce discovery to supervised learning over fixed datasets, where limited observations can support multiple plausible mechanisms that fit locally but fail to generalize. Thus, the key challenge is selecting informative observations to resolve uncertainty, shifting the focus from static inference to adaptive data acquisition. To address this, we propose <strong>LLM-AutoSciLab</strong>, a closed-loop framework that couples hypothesis generation with hypothesis-conditioned experiment selection and mechanism refinement. Rather than fitting models to passively collected data, LLM-AutoSciLab iteratively proposes plausible hypotheses, selects informative experiments to distinguish or refine them, and updates its state using the resulting evidence. To evaluate dynamic, closed-loop scientific discovery with active data acquisition, we introduce <strong>ActiveSciBench</strong>, comprising two datasets: (i) ActiveSciBench-Chem (57 enzyme-kinetics tasks) and (ii) ActiveSciBench-GRN (45 gene-regulatory-network tasks), that model discovery as a budget-constrained process requiring adaptive experiment design, variable selection, and recovery of true mechanisms. Across NewtonBench, ActiveSciBench-Chem, and ActiveSciBench-GRN, LLM-AutoSciLab outperforms prior methods, achieving 67.6% and 35.1% symbolic accuracy on NewtonBench and ActiveSciBench-Chem, respectively, and 31.1% exact graph recovery on ActiveSciBench-GRN. Moreover, hypothesis-guided experimentation is 2&ndash;5&times; more sample-efficient than the strongest competing baselines.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Method Overview -->
+<section class="section hero">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Method Overview</h2>
+      <p class="section-lead">LLM-AutoSciLab treats discovery as active, hypothesis-conditioned experiment design. The LLMs define a space of competing mechanisms and where they disagree; experiments are chosen to separate, refine or falsify them, and the evidence flows back into memory.</p>
+    </div>
+    <figure class="paper-figure">
+      <button class="zoomable" type="button" aria-label="Enlarge the LLM-AutoSciLab overview figure">
+        <img width="2400" height="1364" src="static/images/main_fig.png" alt="LLM-AutoSciLab framework: (A) hypothesis generation, (B) hypothesis-guided experiment selection, (C) hypothesis optimization and confidence feedback" loading="lazy">
+      </button>
+      <figcaption><strong>Overview of LLM-AutoSciLab.</strong> (A) An LLM generates candidate hypotheses from observations and memory. (B) Experiments are actively selected in regions of maximal disagreement between hypotheses. (C) Candidates are iteratively refined via domain-specific optimization (e.g., parameter fitting and constraint enforcement), with confidence-based feedback guiding updates.</figcaption>
+    </figure>
+
+    <div class="method-steps">
+      <div class="method-step">
+        <span class="step-badge">A</span>
+        <h3>Hypothesis generation</h3>
+        <p>A small LLM (Qwen2.5-7B) is sampled in batches and its proposals are grouped into mechanism families until the distribution stabilizes. A larger LLM (GPT-4o-mini) turns that set into a primary hypothesis, alternatives, and diagnostic search regions.</p>
+      </div>
+      <div class="method-step">
+        <span class="step-badge">B</span>
+        <h3>Hypothesis-conditioned experiment selection</h3>
+        <p>While confidence is low, the next experiment goes where competing mechanisms predict most differently inside the LLM-proposed regions (<em>disambiguate</em>). Once a mechanism is stable, experiments improve its fit (<em>refine</em>).</p>
+      </div>
+      <div class="method-step">
+        <span class="step-badge">C</span>
+        <h3>Optimization and confidence feedback</h3>
+        <p>Hypotheses are refit on the new data (PySR or direct skeleton fits for equations, BFGS for graphs). A bootstrap gate refits on resampled data: stable mechanisms gain confidence, brittle ones are flagged, and the verdict is written to memory.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Method Overview -->
+
+<!-- Benchmark -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">ActiveSciBench</h2>
+      <p class="section-lead">Existing benchmarks hand the learner a fixed dataset. ActiveSciBench gives it a hidden experimental system, a query budget, and inputs of which only some matter: the learner has to design experiments, find the relevant variables, and recover the true mechanism.</p>
+    </div>
+    <figure class="paper-figure">
+      <button class="zoomable" type="button" aria-label="Enlarge the ActiveSciBench overview figure">
+        <img width="2000" height="1406" src="static/images/benchmark.png" alt="ActiveSciBench overview: enzyme-kinetics rate-law discovery and gene-regulatory-network graph discovery from budget-limited oracle queries" loading="lazy">
+      </button>
+      <figcaption><strong>Overview of ActiveSciBench.</strong> (a) ActiveSciBench-Chem: symbolic enzyme rate-law recovery. (b) ActiveSciBench-GRN: signed directed gene-regulatory-graph inference.</figcaption>
+    </figure>
+
+    <div class="method-steps">
+      <div class="method-step">
+        <span class="step-badge" style="background: var(--ours);">57</span>
+        <h3>ActiveSciBench-Chem</h3>
+        <p>Enzyme-catalyzed reactions with a hidden rate law. Every experiment sets a shared 7-D assay interface (substrate, inhibitor, second substrate, product, enzyme, temperature, pH) and returns the initial rate. Tiers run from textbook families to cooperative and allosteric kinetics.</p>
+      </div>
+      <div class="method-step">
+        <span class="step-badge" style="background: var(--ours);">45</span>
+        <h3>ActiveSciBench-GRN</h3>
+        <p>Hidden regulatory systems built from 5 motif families &times; 3 topological variants &times; 3 difficulty levels. Experiments knock nodes up or down and observe every downstream change; the target is the signed directed graph, among 3<sup>20</sup> &asymp; 3.5&times;10<sup>9</sup> possibilities.</p>
+      </div>
+      <div class="method-step">
+        <span class="step-badge" style="background: #232F3E;">12</span>
+        <h3>NewtonBench</h3>
+        <p>Counterfactual physics laws across 12 domains, from gravitation and Snell&rsquo;s law to the Bose&ndash;Einstein distribution. Variables are known, so it isolates active symbolic law discovery under a query budget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Benchmark -->
+
+<!-- Main results -->
+<section class="section hero" id="results">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Main Results</h2>
+      <p class="section-lead">All methods use GPT-4o-mini where an LLM is involved and the same fixed oracle budgets. Pick a benchmark and a metric; bars show each difficulty tier, and the overall panel adds the spread over three seeds.</p>
+    </div>
+
+    <div class="viz-controls">
+      <span class="viz-control-label">Benchmark</span>
+      <div id="ctl-bench"></div>
+      <span class="viz-control-label" style="margin-left: 0.5rem;">Metric</span>
+      <div id="ctl-metric"></div>
+    </div>
+
+    <div class="viz-card">
+      <h3 class="viz-card-title">Recovery by difficulty</h3>
+      <p class="viz-card-sub">LLM-AutoSciLab in blue, baselines in gray, grouped by whether they design experiments. Hover a row for exact values.</p>
+      <div class="viz" id="chart-main"></div>
+      <details class="table-view">
+        <summary>Show the full results table</summary>
+        <div id="table-main"></div>
+      </details>
+    </div>
+
+    <h3 class="subsection-title">Fitting the data is not finding the law</h3>
+    <p class="subsection-lead">Exact accuracy only asks whether predictions match the oracle; symbolic accuracy asks whether the recovered expression is the true mechanism. Fit-driven baselines land far below the diagonal: PySR and Bayesian optimization match NewtonBench data on about 70% of tasks but recover the law on only 24%.</p>
+    <div class="viz-grid-2">
+      <div class="viz-card">
+        <h3 class="viz-card-title">NewtonBench</h3>
+        <p class="viz-card-sub">Overall exact vs symbolic accuracy per method.</p>
+        <div class="viz" id="scatter-newton"></div>
+      </div>
+      <div class="viz-card">
+        <h3 class="viz-card-title">ActiveSciBench-Chem</h3>
+        <p class="viz-card-sub">Both LLM baselines sit at the origin: plausible textbook rate laws that are never exactly right.</p>
+        <div class="viz" id="scatter-chem"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End main results -->
+
+<!-- Sample efficiency -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Sample Efficiency</h2>
+      <p class="section-lead">Every oracle call counts. Conditioning each query on competing hypotheses makes it far more informative than uncertainty-driven or passive sampling.</p>
+    </div>
+
+    <div class="viz-card">
+      <h3 class="viz-card-title">Queries needed to match LLM-AutoSciLab</h3>
+      <p class="viz-card-sub">How many oracle queries each method needs to reach LLM-AutoSciLab&rsquo;s fixed-budget performance, as a multiple of LLM-AutoSciLab&rsquo;s budget (B = 20 for NewtonBench and GRN, B = 60 for Chem). The blue rule at 1&times; is LLM-AutoSciLab itself.</p>
+      <div class="viz-grid-3">
+        <div class="viz" id="rel-newton"></div>
+        <div class="viz" id="rel-chem"></div>
+        <div class="viz" id="rel-grn"></div>
+      </div>
+      <details class="table-view">
+        <summary>Show data table</summary>
+        <div id="table-rel"></div>
+      </details>
+    </div>
+
+    <div class="viz-card">
+      <h3 class="viz-card-title">Recovery as the query budget grows</h3>
+      <p class="viz-card-sub">On NewtonBench and GRN the second-best method does not reach LLM-AutoSciLab&rsquo;s 20-query performance even with 100 queries. On Chem, Bayesian experimental design needs 60 queries to catch up with LLM-AutoSciLab at 20.</p>
+      <figure class="paper-figure">
+        <button class="zoomable" type="button" aria-label="Enlarge the budget figure">
+          <img width="2400" height="527" src="static/images/budget_curves.png" alt="Symbolic accuracy on NewtonBench and ActiveSciBench-Chem, and exact graph accuracy on ActiveSciBench-GRN, against query budget from 20 to 100 for LLM-AutoSciLab and the second-best method" loading="lazy">
+        </button>
+      </figure>
+    </div>
+  </div>
+</section>
+<!-- End sample efficiency -->
+
+<!-- Ablations -->
+<section class="section hero">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">What Each Component Contributes</h2>
+      <p class="section-lead">Removing any single component hurts, but each benchmark leans on a different one, a sign that the three benchmarks probe complementary discovery skills.</p>
+    </div>
+    <div class="viz-card">
+      <h3 class="viz-card-title">Ablation: remove one component at a time</h3>
+      <p class="viz-card-sub">Stratified subsets of each benchmark. Dropping hypothesis-conditioned acquisition hurts on all three. Beyond that, Chem depends most on memory (finding the relevant variables), NewtonBench on the adaptive ensemble and confidence gate, and GRN on memory and intervention selection.</p>
+      <div class="viz" id="chart-ablation"></div>
+      <details class="table-view">
+        <summary>Show data table</summary>
+        <div id="table-ablation"></div>
+      </details>
+    </div>
+
+    <div class="viz-card">
+      <h3 class="viz-card-title">LLM backbones</h3>
+      <p class="viz-card-sub">Replacing GPT-4o-mini with open-weight Qwen3 models (4B, 14B, 32B) as the main LLM. Among the Qwen3 models, larger backbones raise symbolic accuracy on Chem and edge F1 and exact-graph accuracy on GRN; on NewtonBench exact accuracy rises with size while symbolic accuracy dips at 14B. GPT-4o-mini still gives the best symbolic and graph recovery.</p>
+      <div id="legend-bb"></div>
+      <div class="viz" id="chart-bb"></div>
+      <details class="table-view">
+        <summary>Show data table (including RMSLE)</summary>
+        <div id="table-bb"></div>
+      </details>
+    </div>
+  </div>
+</section>
+<!-- End ablations -->
+
+<!-- Qualitative Results -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Qualitative Results</h2>
+      <p class="section-lead">What the recovered mechanisms look like, for one symbolic law and one regulatory graph.</p>
+    </div>
+
+    <div class="columns is-variable is-6 is-vcentered">
+      <div class="column is-6">
+        <figure class="paper-figure">
+          <button class="zoomable" type="button" aria-label="Enlarge the NewtonBench case study">
+            <img width="1100" height="1188" src="static/images/qualitative_newton.png" alt="NewtonBench case study: target law with a restoring term and a nonlinear damping term, and the expressions recovered by LLM-AutoSciLab, PySR, LLM-only, Bayesian optimization, code-assisted LLM and Bayesian experiment design" loading="lazy">
+          </button>
+        </figure>
+      </div>
+      <div class="column is-6">
+        <h3 class="subsection-title" style="margin-top: 0;">A NewtonBench law with two components</h3>
+        <p class="subsection-lead">The hidden law adds a restoring term and a nonlinear damping term. Only LLM-AutoSciLab recovers both, with a fitted coefficient of 0.4915 &asymp; 1/2 and a damping exponent within about 1% of the truth.</p>
+        <div class="key-features-container">
+          <div class="key-feature-item" style="padding: 1rem 1.25rem;">
+            <h4 class="key-feature-title" style="font-size: 1rem;">Fit-driven baselines add spurious terms</h4>
+            <p class="key-feature-description" style="font-size: 0.93rem;">PySR inserts a sinusoidal component and Bayesian optimization finds an entangled numerical fit: low local error, wrong mechanism.</p>
+          </div>
+          <div class="key-feature-item" style="padding: 1rem 1.25rem;">
+            <h4 class="key-feature-title" style="font-size: 1rem;">LLM baselines collapse to textbook forms</h4>
+            <p class="key-feature-description" style="font-size: 0.93rem;">LLM-only and code-assisted LLMs return a simplified harmonic law and miss the nonlinear damping entirely.</p>
+          </div>
+          <div class="key-feature-item" style="padding: 1rem 1.25rem;">
+            <h4 class="key-feature-title" style="font-size: 1rem;">Experiment design alone stops short</h4>
+            <p class="key-feature-description" style="font-size: 0.93rem;">Bayesian experiment design moves toward the right components but still converges to a fit-driven approximation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <figure class="paper-figure" style="margin-top: 2.5rem;">
+      <button class="zoomable" type="button" aria-label="Enlarge the GRN case study">
+        <img width="1466" height="446" src="static/images/qualitative_grn.png" alt="ActiveSciBench-GRN case study: ground-truth activation chain S to A to B to C with an irrelevant regulator R, and graphs recovered by LLM-AutoSciLab and baselines" loading="lazy">
+      </button>
+      <figcaption><strong>An ActiveSciBench-GRN case study.</strong> The target is a sparse activation chain S &rarr; A &rarr; B &rarr; C with an irrelevant regulator R. LLM-AutoSciLab recovers the chain exactly and excludes R; baselines add shortcut or side edges, reverse orientations, or miss dependencies. Green edges are correct; red edges are incorrect or spurious.</figcaption>
+    </figure>
+  </div>
+</section>
+<!-- End Qualitative Results -->
+
+<!-- Noise robustness -->
+<section class="section hero">
+  <div class="container is-max-desktop" style="max-width: 1100px;">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Robustness to Observation Noise</h2>
+      <p class="section-lead">Gaussian noise injected at increasing levels. Bars are exact accuracy; lines are RMSLE (NewtonBench, Chem) or edge F1 (GRN). Symbolic recovery degrades in steps while errors rise smoothly, and on GRN noise mainly breaks exact topology while edge-level structure largely survives.</p>
+    </div>
+    <div class="columns">
+      <div class="column is-4">
+        <figure class="paper-figure">
+          <button class="zoomable" type="button" aria-label="Enlarge figure"><img width="1200" height="765" src="static/images/noise_newton.png" alt="NewtonBench accuracy and RMSLE under increasing observation noise" loading="lazy"></button>
+          <figcaption style="text-align:center">(a) NewtonBench</figcaption>
+        </figure>
+      </div>
+      <div class="column is-4">
+        <figure class="paper-figure">
+          <button class="zoomable" type="button" aria-label="Enlarge figure"><img width="1200" height="765" src="static/images/noise_chem.png" alt="ActiveSciBench-Chem accuracy and RMSLE under increasing observation noise" loading="lazy"></button>
+          <figcaption style="text-align:center">(b) ActiveSciBench-Chem</figcaption>
+        </figure>
+      </div>
+      <div class="column is-4">
+        <figure class="paper-figure">
+          <button class="zoomable" type="button" aria-label="Enlarge figure"><img width="1200" height="765" src="static/images/noise_grn.png" alt="ActiveSciBench-GRN exact graph accuracy and edge F1 under increasing observation noise" loading="lazy"></button>
+          <figcaption style="text-align:center">(c) ActiveSciBench-GRN</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End noise robustness -->
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@inproceedings{kabra2026llmautoscilab,
+  title={{LLM-AutoSciLab}: Closed-Loop Scientific Discovery via Active Experimentation with {LLMs}},
+  author={Kabra, Sanchit and Abhyankar, Nikhil and Desai, Saaketh and Iyer, Prasad P. and Reddy, Chandan K.},
+  booktitle={The Fortieth Annual Conference on Neural Information Processing Systems (NeurIPS)},
+  year={2026},
+  url={https://arxiv.org/abs/2605.24043}
+}</code></pre>
+    </div>
+  </section>
+<!--End BibTex citation -->
+  </main>
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
