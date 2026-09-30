@@ -241,45 +241,6 @@
     </div>
   </section>
 
-<!-- Results at a glance -->
-<section class="section" style="padding-top: 0.5rem;">
-  <div class="container">
-    <div class="stat-strip" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 1040px;">
-      <div class="stat-tile">
-        <div class="stat-label">Symbolic accuracy on NewtonBench</div>
-        <div class="stat-value"><span class="stat-accent">67.6%</span></div>
-        <div class="stat-context">12 physics domains with counterfactual laws; the best baseline (Bayesian optimization) reaches 24.5%.</div>
-      </div>
-      <div class="stat-tile">
-        <div class="stat-label">Symbolic accuracy on ActiveSciBench-Chem</div>
-        <div class="stat-value"><span class="stat-accent">35.1%</span></div>
-        <div class="stat-context">57 enzyme-kinetics tasks; Bayesian experimental design reaches 31.6%, both LLM baselines 0%.</div>
-      </div>
-      <div class="stat-tile">
-        <div class="stat-label">Exact graph recovery on ActiveSciBench-GRN</div>
-        <div class="stat-value"><span class="stat-accent">31.1%</span></div>
-        <div class="stat-context">45 regulatory-network tasks; the best baseline (GIES) recovers 6.7% of graphs exactly.</div>
-      </div>
-      <div class="stat-tile">
-        <div class="stat-label">More sample-efficient</div>
-        <div class="stat-value">2&ndash;5&times;</div>
-        <div class="stat-context">than the strongest competing baselines: they need several times more oracle queries to match LLM-AutoSciLab.</div>
-      </div>
-      <div class="stat-tile">
-        <div class="stat-label">Edge F1 on ActiveSciBench-GRN</div>
-        <div class="stat-value">72.5%</div>
-        <div class="stat-context">vs 56.3% for GIES, with 98.2% of edge signs (activation vs repression) correct.</div>
-      </div>
-      <div class="stat-tile">
-        <div class="stat-label">Hidden kinetic instantiations</div>
-        <div class="stat-value">&gt;6&times;10<sup style="font-size:0.5em">16</sup></div>
-        <div class="stat-context">in ActiveSciBench-Chem even at 100 values per hidden parameter, so tasks cannot be solved by recalling textbook laws.</div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End results at a glance -->
-
 <!-- Paper abstract -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
@@ -364,6 +325,45 @@
   </div>
 </section>
 <!-- End Benchmark -->
+
+<!-- Results at a glance -->
+<section class="section" style="padding-top: 0.5rem;">
+  <div class="container">
+    <div class="stat-strip" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 1040px;">
+      <div class="stat-tile">
+        <div class="stat-label">Symbolic accuracy on NewtonBench</div>
+        <div class="stat-value"><span class="stat-accent">67.6%</span></div>
+        <div class="stat-context">12 physics domains with counterfactual laws; the best baseline (Bayesian optimization) reaches 24.5%.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Symbolic accuracy on ActiveSciBench-Chem</div>
+        <div class="stat-value"><span class="stat-accent">35.1%</span></div>
+        <div class="stat-context">57 enzyme-kinetics tasks; Bayesian experimental design reaches 31.6%, both LLM baselines 0%.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Exact graph recovery on ActiveSciBench-GRN</div>
+        <div class="stat-value"><span class="stat-accent">31.1%</span></div>
+        <div class="stat-context">45 regulatory-network tasks; the best baseline (GIES) recovers 6.7% of graphs exactly.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">More sample-efficient</div>
+        <div class="stat-value">2&ndash;5&times;</div>
+        <div class="stat-context">than the strongest competing baselines: they need several times more oracle queries to match LLM-AutoSciLab.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Edge F1 on ActiveSciBench-GRN</div>
+        <div class="stat-value">72.5%</div>
+        <div class="stat-context">vs 56.3% for GIES, with 98.2% of edge signs (activation vs repression) correct.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Hidden kinetic instantiations</div>
+        <div class="stat-value">&gt;6&times;10<sup style="font-size:0.5em">16</sup></div>
+        <div class="stat-context">in ActiveSciBench-Chem even at 100 values per hidden parameter, so tasks cannot be solved by recalling textbook laws.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End results at a glance -->
 
 <!-- Main results -->
 <section class="section hero" id="results">
@@ -562,11 +562,10 @@
         </button>
       </div>
       <pre id="bibtex-code"><code>@inproceedings{kabra2026llmautoscilab,
-  title={{LLM-AutoSciLab}: Closed-Loop Scientific Discovery via Active Experimentation with {LLMs}},
-  author={Kabra, Sanchit and Abhyankar, Nikhil and Desai, Saaketh and Iyer, Prasad P. and Reddy, Chandan K.},
+  title={{LLM}-AutoSciLab: Closed-Loop Scientific Law Discovery via Active Experimentation with {LLM}s},
+  author={Kabra, Sanchit and Abhyankar, Nikhil and Desai, Saaketh and Iyer, Prasad and Reddy, Chandan K},
   booktitle={The Fortieth Annual Conference on Neural Information Processing Systems (NeurIPS)},
   year={2026},
-  url={https://arxiv.org/abs/2605.24043}
 }</code></pre>
     </div>
   </section>
